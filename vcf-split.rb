@@ -15,7 +15,7 @@ class VcfSplit
 		parse_args(*args)
 
 		# Read initial file as string
-		@content = File.open(@input_file, "r").read
+		@content = File.open(@input_file, "r").read.gsub('\r\n', '\n')
 	end
 
 	# Parse args to validate them
@@ -82,6 +82,12 @@ class VcfSplit
 
 	# Make phone numbers of a vCard in a more international format
 	def fix_phone_numbers(vcard)
+		tel = /^TEL;(.*)(;PREF)?:(.*)/
+
+		vcard.gsub!(tel) do
+			"TEL;#{$1}#{$2}:#{$3.gsub('-','')}"
+		end
+
 		return vcard
 	end
 
