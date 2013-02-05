@@ -39,8 +39,6 @@ class VcfSplit
 		split_vcards(@content).each do |vcard|
 			name = File.join(@output_dir, get_vcard_name(vcard)+".vcf")
 
-			vcard = fix_phone_numbers(vcard)
-			
 			# Save the file
 			File.open(name, "w") do |file|
 				file.write(vcard)
@@ -58,7 +56,7 @@ class VcfSplit
 		content.each_line do |line|
 			buffer << line
 			if line.chomp == 'END:VCARD'
-				return_array << buffer.join
+				return_array << fix_phone_numbers(buffer.join)
 				buffer = []
 			end
 		end

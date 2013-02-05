@@ -49,10 +49,11 @@ class VcfSplitTest < Test::Unit::TestCase
 	end
 
 	def test_fix_phone_number
-		alice_fixed_file = File.join(@data_dir, "Alice-phone-fixed.vcf")
+		alice_bad = File.open(File.join(@data_dir, "Alice-bad-phone.vcf")).read
+		alice_good = File.open(File.join(@data_dir, "Alice-good-phone.vcf")).read
 
-		result = @instance.fix_phone_numbers(@alice)
-		expected = File.open(alice_fixed_file).read
+		result = @instance.fix_phone_numbers(alice_bad)
+		expected = alice_good
 		assert_equal(result, expected)
 	end
 
